@@ -2,18 +2,34 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}SAFER COMPANIE!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <!-- Favicons -->
+        <link href="{{asset('assets/img/apple-touch-icon.png')}}" rel="apple-touch-icon">
+        <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
         {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
+            <link href="{{asset('assets/vendor/animate.css/animate.min.css')}}" rel="stylesheet">
+            <link href="{{asset('assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+            <link href="{{asset('assets/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+            <link href="{{asset('assets/vendor/swiper/swiper-bundle.min.css')}}" rel="stylesheet">
+            
+            <!-- Template Main CSS File -->
+            <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
         {% endblock %}
 
         {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
+        <script src="{{asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{asset('assets/vendor/swiper/swiper-bundle.min.js')}}"></script>
+    <script src="{{asset('assets/vendor/php-email-form/validate.js')}}"></script>
+
+    <!-- Template Main JS File -->
+    <script src="{{asset('assets/js/main.js')}}"></script>
         {% endblock %}
     </head>
     <body>
+        {% include "_partials/header.html.twig"%}
         {% block body %}{% endblock %}
+        {% include "_partials/footer.html.twig"%}    
     </body>
 </html>
