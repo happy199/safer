@@ -133,12 +133,23 @@
             <li class="nav-item">
                 <a class="nav-link " href="contact.html">Contact</a>
             </li>
+            {% if app.user %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ app.user.userIdentifier }}</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item " href="property-single.html">Mon Compte</a>
+                        <a class="dropdown-item " href="{{ path('app_logout') }}">Déconnexion</a>
+                    </div>
+                </li>
+            {% else %}
+                <a class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse" href="{{ path('app_login') }}">Connexion</a>
+            {% endif %}
             </ul>
         </div>
 
-        <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
+        {# <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
             <i class="bi bi-search"></i>
-        </button>
+        </button> #}
 
         </div>
     </nav><!-- End Header/Navbar -->
