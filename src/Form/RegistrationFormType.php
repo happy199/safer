@@ -20,10 +20,13 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'attr' => [
-                    'class' => 'form-control input-lg'
+                    'class' => 'form-control input-lg my-3'
                 ]
             ])
             ->add('agreeTerms', CheckboxType::class, [
+                'attr' => [
+                    'class' => ' my-3'
+                ],
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
@@ -37,7 +40,7 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'attr' => [
                     'autocomplete' => 'new-password',
-                    'class' => 'form-control input-lg'
+                    'class' => 'form-control input-lg my-3'
                 ],
                 'constraints' => [
                     new NotBlank([

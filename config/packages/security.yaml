@@ -7,16 +7,15 @@ security:
     providers:
         user_provider:
             entity:
-                class: APP\Entity\User
+                class: App\Entity\User
                 property: email
-        users_in_memory: { memory: null }
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             lazy: true
-            provider: users_in_memory
+            provider: user_provider
             custom_authenticator: App\Security\UserAuthenticator
             logout:
                 path: app_logout

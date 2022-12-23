@@ -1,14 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
-
-{% block body %}
-    <h1>Register</h1>
-
-
-
-    
-{% endblock %}
+{% block title %}Inscription{% endblock %}
 
 
 {% block body %}
@@ -17,44 +9,15 @@
 
 <div class="row" style="margin-top:20px">
     <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-		<form role="form" method="post">
-            {% if error %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
+            {{ form_start(registrationForm) }}
+            {{ form_row(registrationForm.email) }}
+            {{ form_row(registrationForm.plainPassword, {
+                label: 'Password'
+            }) }}
+            {{ form_row(registrationForm.agreeTerms) }}
 
-            {% if app.user %}
-                <div class="mb-3">
-                    Vous êtes connecté(e) comme {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Me déconnecter</a>
-                </div>
-            {% endif %}
-			<fieldset>
-				<h2>Connectez vous s'il vous plait</h2>
-				<hr class="colorgraph">
-				<div class="form-group">
-                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control input-lg" placeholder="Addresse Email" autocomplete="email" required autofocus>
-				</div>
-				<div class="form-group">
-                    <input type="password" name="password" id="inputPassword" class="form-control input-lg" autocomplete="current-password" placeholder="Mot de Passe" required>
-				</div>
-				<span class="button-checkbox">
-					<button type="button" class="btn" data-color="info">Se souvenir de moi</button>
-                    <input type="checkbox" name="_remember_me" id="remember_me" checked="checked" class="hidden">
-					<a href="" class="btn btn-link pull-right">Mot de passe oublié ?</a>
-				</span>
-                <input type="hidden" name="_csrf_token"
-                    value="{{ csrf_token('authenticate') }}"
-                >
-				<hr class="colorgraph">
-				<div class="row">
-					<div class="col-xs-6 col-sm-6 col-md-6">
-                        <input type="submit" class="btn btn-lg btn-b-n" value="Se connecter">
-					</div>
-					<div class="col-xs-6 col-sm-6 col-md-6">
-						<a href="inscription" class="btn btn-lg btn-outline-dark btn-block" style="border-radius: inherit;">S'inscrire</a>
-					</div>
-				</div>
-			</fieldset>
-		</form>
+            <button type="submit" class="btn btn-lg btn-b-n">S'inscrire</button>
+            {{ form_end(registrationForm) }}
 	</div>
 </div>
 

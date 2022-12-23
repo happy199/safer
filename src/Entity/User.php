@@ -9,6 +9,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Uid\UuidV4;
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'Un compte existe dejà avec cette adresse email')]
@@ -38,12 +40,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?bool $is_register = false;
 
     /**
-     * @ORM\Id
-     * @ORM\Column(type="uuid", unique=true)
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidV4Generator::class)
+     * @ORM\Column(type="uuid")
      */
-    private $uuid;
+    private $someProperty;
+
+    public function __construct(){
+        $this->uuid = Uuid::v4();
+    }
 
     public function getId(): ?int
     {
