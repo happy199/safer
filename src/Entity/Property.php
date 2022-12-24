@@ -2,12 +2,20 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\CreatedAtTrait;
+use App\Entity\Trait\SlugTrait;
 use App\Repository\PropertyRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PropertyRepository::class)]
 class Property
 {
+
+    use CreatedAtTrait;
+    use SlugTrait;
+
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -46,11 +54,16 @@ class Property
     #[ORM\Column(nullable: true)]
     private ?int $nbview = null;
 
-    #[ORM\ManyToOne(inversedBy: 'properties')]
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'properties')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?Category $category = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $images = null;
+
+    public function __construct(){
+        $this->created_at = new \DateTimeImmutable();
+    }
 
     public function __toString(): string
     {

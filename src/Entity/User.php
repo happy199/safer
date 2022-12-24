@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use App\Entity\Trait\CreatedAtTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -16,6 +17,10 @@ use Symfony\Component\Uid\UuidV4;
 #[UniqueEntity(fields: ['email'], message: 'Un compte existe dejà avec cette adresse email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+
+    use CreatedAtTrait;
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -46,6 +51,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct(){
         $this->uuid = Uuid::v4();
+        $this->created_at = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
