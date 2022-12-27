@@ -58,6 +58,10 @@ a:hover {
   font-weight: 500;
 }
 
+.like-ico:hover{
+  color: red;
+}
+
 .link-icon span {
   font-size: 14px;
   padding-left: 4px;
