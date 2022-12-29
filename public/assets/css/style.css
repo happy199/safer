@@ -62,6 +62,10 @@ a:hover {
   color: red;
 }
 
+.grid a{
+  width: -webkit-fill-available;
+}
+
 .link-icon span {
   font-size: 14px;
   padding-left: 4px;

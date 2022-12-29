@@ -116,7 +116,7 @@
                       </li>
                       <li class="d-flex justify-content-between">
                         <strong>Statut:</strong>
-                        <span>{{ property.status }}</span>
+                        <span>{% if(property.status == "sell") %} A vendre {% else %} A louer {% endif %}</span>
                       </li>
                       <li class="d-flex justify-content-between">
                         <strong>Superficie:</strong>

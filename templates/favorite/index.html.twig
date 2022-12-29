@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Liste des favoris !
+{% endblock %}
+
+{% block body %}
+  <main id="main">
+    <!-- ======= Intro Single ======= -->
+    <section class="intro-single">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 col-lg-8">
+            <div class="title-single-box">
+              <h1 class="title-single">
+                Mes favoris
+              </h1>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-4">
+            <nav aria-label="breadcrumb"
+              class="breadcrumb-box d-flex justify-content-lg-end">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Accueil</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  Mes Favoris
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Intro Single -->
+
+    <div class="container mb-5">
+      <div class="card">
+        {% if favorites is empty %}
+          <p>
+            Vous n'avez pas encore mis de propriétés en favori.
+          </p>
+        {% else %}
+          <table class="table table-hover shopping-cart-wrap">
+            <thead class="text-muted">
+              <tr>
+                <th scope="col">
+                  Titre
+                </th>
+                <th scope="col" width="120">
+                  Adresse
+                </th>
+                <th scope="col" width="120">
+                  Prix
+                </th>
+                <th scope="col" width="200" class="text-right">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for favorite in favorites %}
+                <tr>
+                  <td>
+                    <figure class="media">
+                      <div class="img-wrap">
+                        <img src="http://bootstrap-ecommerce.com/main/images/items/2.jpg"
+                          class="img-thumbnail img-sm" />
+                      </div>
+                      <figcaption class="media-body">
+                        <h6 class="title text-truncate">
+                          {{ favorite.property.title }}
+                        </h6>
+                        <dl class="param param-inline small">
+                          <dt>
+                            Description :
+                          </dt>
+                          <dd>{{ favorite.property.description }}</dd>
+                        </dl>
+                        <dl class="param param-inline small">
+                          <dt>
+                            Superficie:
+                          </dt>
+                          <dd>{{ favorite.property.surface }}</dd>
+                        </dl>
+                        <dl class="param param-inline small">
+                          <dt>
+                            Statut:
+                          </dt>
+                          <dd>
+                            {% if favorite.property.status == 'sell' %}
+                               A vendre
+                            {% else %}
+                              A louer
+                            {% endif %}
+                          </dd>
+                        </dl>
+                      </figcaption>
+                    </figure>
+                  </td>
+                  <td>
+                    <var class="price">{{ favorite.property.address }}</var>
+                    <small class="text-muted">
+                      {{ favorite.property.city }}({{
+                        favorite.property.department
+                      }})
+                    </small>
+                  </td>
+                  <td>
+                    <div class="price-wrap">
+                      <var class="price">{{ favorite.property.price }} €</var>
+                    </div> <!-- price-wrap .// -->
+                  </td>
+                  <td class="text-right grid">
+                    <a title=""
+                      href="/properties/{{ favorite.property.slug }}"
+                      class="btn btn-outline-success my-5"
+                      data-toggle="tooltip"
+                      data-original-title="Save to Wishlist">
+                      <i class="fa fa-eye"></i> Voir
+                    </a>
+                    <a href="{{
+                      path(
+                        'favorite_delete',
+                        {
+                          id: favorite.id
+                        }
+                      )
+                      }}"
+                      onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce favori ?')"
+                      class="btn btn-outline-danger">
+                      × Supprimer
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+      </div> <!-- card.// -->
+    </div>
+  </main>
+{% endblock %}
