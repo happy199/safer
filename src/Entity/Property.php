@@ -54,8 +54,8 @@ class Property
     #[ORM\Column(nullable: true)]
     private ?int $nbview = null;
 
-    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'properties')]
-    #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: "properties")]
+    #[ORM\JoinColumn(name: "category_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     private ?Category $category = null; 
 
     #[ORM\Column(length: 255, nullable: true)]

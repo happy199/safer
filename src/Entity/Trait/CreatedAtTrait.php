@@ -16,6 +16,8 @@ trait CreatedAtTrait
 
     public function setCreatedAt(\DateTimeImmutable $created_at): self
     {
+        $timezone = new \DateTimeZone('Europe/Paris');
+        $created_at->setTimezone($timezone);
         $this->created_at = $created_at;
         return $this;
     }
