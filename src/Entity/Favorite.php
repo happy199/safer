@@ -17,11 +17,11 @@ class Favorite
     private ?int $id;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "favorites")]
-    #[ORM\JoinColumn(nullable:false)]
+    #[ORM\JoinColumn(nullable:false, onDelete: "CASCADE")]
     private $user;
 
     #[ORM\ManyToOne(targetEntity: Property::class, inversedBy: "favorites")]
-    #[ORM\JoinColumn(nullable:false)]
+    #[ORM\JoinColumn(nullable:false, onDelete: "CASCADE")]
     private $property;
 
     public function getId(): ?int
