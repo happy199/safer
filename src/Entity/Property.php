@@ -8,6 +8,8 @@ use App\Repository\PropertyRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PropertyRepository::class)]
+#[ORM\Index(name: 'property', columns: ['title', 'address', 'status', 'description','city','department'], flags: ['fulltext'])]
+
 class Property
 {
 

@@ -39,6 +39,21 @@ class PropertyRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+    * Recherche les annonces en fonction du formulaire
+    * @return void 
+    */
+    public function search($mots = null, $categorie = null){
+        $query = $this->createQueryBuilder('a');
+        $query->where('a.category = :categorie')
+            ->setParameter('categorie', $categorie);
+        if($mots != null){
+            $query->andWhere('MATCH_AGAINST(a.title, a.description, a.address, a.status, a.city, a.department) AGAINST (:mots boolean)>0')
+                ->setParameter('mots', $mots);
+        }
+        return $query->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return Property[] Returns an array of Property objects
 //     */

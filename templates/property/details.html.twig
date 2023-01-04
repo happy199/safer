@@ -23,7 +23,10 @@
                   <a href="/">Accueil</a>
                 </li>
                 <li class="breadcrumb-item">
-                  <a href="/properties">Propriétes</a>
+                  <a href="/categories">Catégories</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="{{ app.request.headers.get('referer') }}">Propriétés</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
                   {{ property.title }}
