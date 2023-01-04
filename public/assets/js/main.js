@@ -1,11 +1,11 @@
 /**
-* Template Name: EstateAgency - v4.9.1
-* Template URL: https://bootstrapmade.com/real-estate-agency-bootstrap-template/
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
-(function() {
-  "use strict";
+ * Template Name: EstateAgency - v4.9.1
+ * Template URL: https://bootstrapmade.com/real-estate-agency-bootstrap-template/
+ * Author: BootstrapMade.com
+ * License: https://bootstrapmade.com/license/
+ */
+;(function () {
+  'use strict'
 
   /**
    * Easy selector helper function
@@ -26,7 +26,7 @@
     let selectEl = select(el, all)
     if (selectEl) {
       if (all) {
-        selectEl.forEach(e => e.addEventListener(type, listener))
+        selectEl.forEach((e) => e.addEventListener(type, listener))
       } else {
         selectEl.addEventListener(type, listener)
       }
@@ -34,7 +34,7 @@
   }
 
   /**
-   * Easy on scroll event listener 
+   * Easy on scroll event listener
    */
   const onscroll = (el, listener) => {
     el.addEventListener('scroll', listener)
@@ -75,24 +75,24 @@
   /**
    * Preloader
    */
-  let preloader = select('#preloader');
+  let preloader = select('#preloader')
   if (preloader) {
     window.addEventListener('load', () => {
       preloader.remove()
-    });
+    })
   }
 
   /**
    * Search window open/close
    */
-  let body = select('body');
-  on('click', '.navbar-toggle-box', function(e) {
+  let body = select('body')
+  on('click', '.navbar-toggle-box', function (e) {
     e.preventDefault()
     body.classList.add('box-collapse-open')
     body.classList.remove('box-collapse-closed')
   })
 
-  on('click', '.close-box-collapse', function(e) {
+  on('click', '.close-box-collapse', function (e) {
     e.preventDefault()
     body.classList.remove('box-collapse-open')
     body.classList.add('box-collapse-closed')
@@ -106,15 +106,15 @@
     loop: true,
     autoplay: {
       delay: 2000,
-      disableOnInteraction: false
+      disableOnInteraction: false,
     },
     slidesPerView: 'auto',
     pagination: {
       el: '.swiper-pagination',
       type: 'bullets',
-      clickable: true
-    }
-  });
+      clickable: true,
+    },
+  })
 
   /**
    * Property carousel
@@ -124,26 +124,26 @@
     loop: true,
     autoplay: {
       delay: 5000,
-      disableOnInteraction: false
+      disableOnInteraction: false,
     },
     slidesPerView: 'auto',
     pagination: {
       el: '.propery-carousel-pagination',
       type: 'bullets',
-      clickable: true
+      clickable: true,
     },
     breakpoints: {
       320: {
         slidesPerView: 1,
-        spaceBetween: 20
+        spaceBetween: 20,
       },
 
       1200: {
         slidesPerView: 3,
-        spaceBetween: 20
-      }
-    }
-  });
+        spaceBetween: 20,
+      },
+    },
+  })
 
   /**
    * News carousel
@@ -153,26 +153,26 @@
     loop: true,
     autoplay: {
       delay: 5000,
-      disableOnInteraction: false
+      disableOnInteraction: false,
     },
     slidesPerView: 'auto',
     pagination: {
       el: '.news-carousel-pagination',
       type: 'bullets',
-      clickable: true
+      clickable: true,
     },
     breakpoints: {
       320: {
         slidesPerView: 1,
-        spaceBetween: 20
+        spaceBetween: 20,
       },
 
       1200: {
         slidesPerView: 3,
-        spaceBetween: 20
-      }
-    }
-  });
+        spaceBetween: 20,
+      },
+    },
+  })
 
   /**
    * Testimonial carousel
@@ -182,15 +182,15 @@
     loop: true,
     autoplay: {
       delay: 5000,
-      disableOnInteraction: false
+      disableOnInteraction: false,
     },
     slidesPerView: 'auto',
     pagination: {
       el: '.testimonial-carousel-pagination',
       type: 'bullets',
-      clickable: true
-    }
-  });
+      clickable: true,
+    },
+  })
 
   /**
    * Property Single carousel
@@ -200,70 +200,101 @@
     loop: true,
     autoplay: {
       delay: 5000,
-      disableOnInteraction: false
+      disableOnInteraction: false,
     },
     pagination: {
       el: '.property-single-carousel-pagination',
       type: 'bullets',
-      clickable: true
+      clickable: true,
+    },
+  })
+
+  $('.button-checkbox').each(function () {
+    var $widget = $(this),
+      $button = $widget.find('button'),
+      $checkbox = $widget.find('input:checkbox'),
+      color = $button.data('color'),
+      settings = {
+        on: {
+          icon: 'glyphicon glyphicon-check',
+        },
+        off: {
+          icon: 'glyphicon glyphicon-unchecked',
+        },
+      }
+
+    $button.on('click', function () {
+      $checkbox.prop('checked', !$checkbox.is(':checked'))
+      $checkbox.triggerHandler('change')
+      updateDisplay()
+    })
+
+    $checkbox.on('change', function () {
+      updateDisplay()
+    })
+
+    function updateDisplay() {
+      var isChecked = $checkbox.is(':checked')
+      // Set the button's state
+      $button.data('state', isChecked ? 'on' : 'off')
+
+      // Set the button's icon
+      $button
+        .find('.state-icon')
+        .removeClass()
+        .addClass('state-icon ' + settings[$button.data('state')].icon)
+
+      // Update the button's color
+      if (isChecked) {
+        $button.removeClass('btn-default').addClass('btn-' + color + ' active')
+      } else {
+        $button.removeClass('btn-' + color + ' active').addClass('btn-default')
+      }
     }
-  });
+    function init() {
+      updateDisplay()
+      // Inject the icon if applicable
+      if ($button.find('.state-icon').length == 0) {
+        $button.prepend(
+          '<i class="state-icon ' +
+            settings[$button.data('state')].icon +
+            '"></i> ',
+        )
+      }
+    }
+    init()
+  })
 
-  $('.button-checkbox').each(function(){
-		var $widget = $(this),
-			$button = $widget.find('button'),
-			$checkbox = $widget.find('input:checkbox'),
-			color = $button.data('color'),
-			settings = {
-					on: {
-						icon: 'glyphicon glyphicon-check'
-					},
-					off: {
-						icon: 'glyphicon glyphicon-unchecked'
-					}
-			};
+  const slider = document.getElementById('price-slider')
 
-		$button.on('click', function () {
-			$checkbox.prop('checked', !$checkbox.is(':checked'));
-			$checkbox.triggerHandler('change');
-			updateDisplay();
-		});
-
-		$checkbox.on('change', function () {
-			updateDisplay();
-		});
-
-		function updateDisplay() {
-			var isChecked = $checkbox.is(':checked');
-			// Set the button's state
-			$button.data('state', (isChecked) ? "on" : "off");
-
-			// Set the button's icon
-			$button.find('.state-icon')
-				.removeClass()
-				.addClass('state-icon ' + settings[$button.data('state')].icon);
-
-			// Update the button's color
-			if (isChecked) {
-				$button
-					.removeClass('btn-default')
-					.addClass('btn-' + color + ' active');
-			}
-			else
-			{
-				$button
-					.removeClass('btn-' + color + ' active')
-					.addClass('btn-default');
-			}
-		}
-		function init() {
-			updateDisplay();
-			// Inject the icon if applicable
-			if ($button.find('.state-icon').length == 0) {
-				$button.prepend('<i class="state-icon ' + settings[$button.data('state')].icon + '"></i> ');
-			}
-		}
-		init();
-	});
-
+  if (slider) {
+    const min = document.getElementById('min')
+    const max = document.getElementById('max')
+    const minValue = Math.floor(parseInt(slider.dataset.min, 10) / 10) * 10
+    const maxValue = Math.ceil(parseInt(slider.dataset.max, 10) / 10) * 10
+    const range = noUiSlider.create(slider, {
+      start: [min.value || minValue, max.value || maxValue],
+      connect: true,
+      step: 10,
+      range: {
+        min: minValue,
+        max: maxValue,
+      },
+    })
+    range.on('slide', function (values, handle) {
+      if (handle === 0) {
+        min.value = Math.round(values[0])
+      }
+      if (handle === 1) {
+        max.value = Math.round(values[1])
+      }
+    })
+    range.on('end', function (values, handle) {
+      if (handle === 0) {
+        min.dispatchEvent(new Event('change'))
+      } else {
+        max.dispatchEvent(new Event('change'))
+      }
+    })
+  }
 })()
