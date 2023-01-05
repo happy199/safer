@@ -138,5 +138,13 @@
         {% endif %}
       </div> <!-- card.// -->
     </div>
+    {% if user is defined and user is not null %}
+      <div class="text-center my-5">
+        <form action="/favorites/sendmail" method="post">
+          <input type="hidden" name="user_id" value="{{ user.id }}">
+          <button type="submit" class="btn btn-b-n">Envoyer les favoris par mail</button>
+        </form>
+      </div>
+    {% endif %}
   </main>
 {% endblock %}
