@@ -89,8 +89,6 @@ class PropertyController extends AbstractController
                     $user->setEmail($email);
                     // On ne définit pas de mot de passe pour l'utilisateur
                     $user->setPassword('');
-                    $user->setRoles(['ROLE_USER']);
-                    $user->setIsRegister(true);
 
                     $entityManager->persist($user);
                     $entityManager->flush();

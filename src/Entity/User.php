@@ -10,6 +10,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Uid\UuidV4;
 
 
@@ -44,6 +46,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $is_register = false;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Favorite::class)]
+    private Collection $favorites;
+
     /**
      * @ORM\Column(type="uuid")
      */
@@ -52,6 +57,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct(){
         $this->uuid = Uuid::v4();
         $this->created_at = new \DateTimeImmutable();
+        $this->favorites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,6 +133,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getFavoriteList(): ?string
     {
         return $this->favorite_list;
+    }
+
+    /**
+     * @return Collection<int, Favorite>
+     */
+    public function getFavorites(): Collection
+    {
+        return $this->favorites;
     }
 
     public function setFavoriteList(?string $favorite_list): self

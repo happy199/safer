@@ -116,11 +116,11 @@
             <li class="nav-item">
                 <a class="nav-link " href="/categories">Propriétés</a>
             </li>
-
+            {% if not app.user %}
             <li class="nav-item">
                 <a class="nav-link " href="/favorites/access">Liste de Souhaits</a>
             </li>
-            
+            {% endif %}
             <li class="nav-item">
                 <a class="nav-link " href="contact.html">Contact</a>
             </li>

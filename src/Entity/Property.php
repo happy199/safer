@@ -6,6 +6,8 @@ use App\Entity\Trait\CreatedAtTrait;
 use App\Entity\Trait\SlugTrait;
 use App\Repository\PropertyRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: PropertyRepository::class)]
 #[ORM\Index(name: 'property', columns: ['title', 'address', 'status', 'description','city','department'], flags: ['fulltext'])]
@@ -60,11 +62,15 @@ class Property
     #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private $category; 
 
+    #[ORM\OneToMany(mappedBy: 'property', targetEntity: Favorite::class)]
+    private Collection $favorites;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $images = null;
 
     public function __construct(){
         $this->created_at = new \DateTimeImmutable();
+        $this->favorites = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -100,6 +106,15 @@ class Property
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Favorite>
+     */
+    public function getFavorites(): Collection
+    {
+        return $this->favorites;
+    }
+
 
     public function getSurface(): ?float
     {
