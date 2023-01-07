@@ -54,6 +54,17 @@ class PropertyRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
+    public function findByPriceRange($minPrice, $maxPrice)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.price >= :minPrice')
+            ->andWhere('p.price <= :maxPrice')
+            ->setParameter('minPrice', $minPrice)
+            ->setParameter('maxPrice', $maxPrice)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Property[] Returns an array of Property objects
 //     */

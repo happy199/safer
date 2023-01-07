@@ -5,6 +5,7 @@ use App\Entity\Category;
 use App\Entity\Property;
 use App\Repository\PropertyRepository;
 use App\Form\SearchPropertyType;
+use App\Form\SearchByPriceType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -48,6 +49,10 @@ class CategoriesController extends AbstractController
         
         $search = $form->handleRequest($request);
 
+        $formPrice = $this->createForm(SearchByPriceType::class);
+
+        $formPrice->handleRequest($request);
+
         // Récupérer les propriétés associées à la catégorie
         $properties = $category->getProperties();
 
@@ -57,11 +62,22 @@ class CategoriesController extends AbstractController
                 $search->get('mots')->getData(),$category
             );
         }
+
+        if ($formPrice->isSubmitted() && $formPrice->isValid()) {
+            $data = $formPrice->getData();
+        
+            $minPrice = $data['min_price'];
+            $maxPrice = $data['max_price'];
+        
+            $properties = $propertyrepo->findByPriceRange($minPrice, $maxPrice);
+        }
         
         return $this->render('property/index.html.twig', [
             'category' => $category,
             'properties' => $properties,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'formPrice' => $formPrice->createView()
         ]);
     }
+
 }

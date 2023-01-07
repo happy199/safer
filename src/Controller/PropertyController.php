@@ -109,4 +109,22 @@ class PropertyController extends AbstractController
 
         return $this->redirectToRoute('property_details', ['slug' => $property->getSlug()]);
     }
+
+    #[Route('/searchbyprice', name: 'searchByPrice')]
+    public function searchByPrice(Request $request)
+    {
+        // Récupération des valeurs du range du formulaire
+        $minPrice = $request->request->get('min_price');
+        $maxPrice = $request->request->get('max_price');
+
+        // Récupération des propriétés dont le prix est compris entre minPrice et maxPrice
+        $properties = $this->entityManager
+            ->getRepository(Property::class)
+            ->findByPriceRange($minPrice, $maxPrice);
+
+        // Rendu de la vue qui affiche les propriétés trouvées
+        return $this->render('property/index.html.twig', [
+            'properties' => $properties,
+        ]);
+    }
 }
