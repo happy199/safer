@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Category;
+use App\Entity\Contact;
+use App\Entity\Favorite;
 use App\Entity\Property;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -51,5 +53,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Catégories', 'fas fa-box', Category::class);
         yield MenuItem::linkToCrud('Propriétés', 'fas fa-land-mine-on', Property::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', User::class);
+        yield MenuItem::linkToCrud('Messages', 'fas fa-message', Contact::class);
+        yield MenuItem::linkToCrud('Favoris', 'fas fa-heart', Favorite::class);
     }
 }
