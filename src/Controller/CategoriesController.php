@@ -6,12 +6,14 @@ use App\Entity\Property;
 use App\Repository\PropertyRepository;
 use App\Form\SearchPropertyType;
 use App\Form\SearchByPriceType;
+use App\Service\PropertyService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 
 class CategoriesController extends AbstractController
 {
@@ -25,10 +27,10 @@ class CategoriesController extends AbstractController
     }
 
     #[Route('/categories', name: 'app_categories')]
-    public function index(): Response
+    public function index(PaginatorInterface $paginator, Request $request): Response
     {
 
-        $categories = $this->entityManager->createQueryBuilder()
+        $categoriesquery = $this->entityManager->createQueryBuilder()
             ->select('c')
             ->from(Category::class, 'c')
             ->innerJoin('c.properties', 'p')
@@ -37,13 +39,18 @@ class CategoriesController extends AbstractController
             ->getQuery()
             ->getResult();
 
+        $categories = $paginator->paginate(
+            $categoriesquery, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            6 // Nombre de résultats par page
+        );
         return $this->render('categories/index.html.twig', [
             'categories' => $categories,
         ]);
     }
 
     #[Route('/categories/{slug}', name: 'categories_show')]
-    public function show(Category $category, PropertyRepository $propertyrepo, Request $request): Response
+    public function show(Category $category, PropertyRepository $propertyrepo, Request $request, PropertyService $propertyService): Response
     {
         $form = $this->createForm(SearchPropertyType::class);
         
@@ -54,7 +61,7 @@ class CategoriesController extends AbstractController
         $formPrice->handleRequest($request);
 
         // Récupérer les propriétés associées à la catégorie
-        $properties = $category->getProperties();
+        $properties =  $propertyService->getPaginatedProperties($category);
 
         if($form->isSubmitted() && $form->isValid()){
             // On recherche les annonces correspondant aux mots clés

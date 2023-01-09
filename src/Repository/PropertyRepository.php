@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Category;
 use App\Entity\Property;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -65,28 +67,18 @@ class PropertyRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-//    /**
-//     * @return Property[] Returns an array of Property objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findForPagination(?Category $category = null): Query
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->orderBy('p.created_at', 'DESC');
 
-//    public function findOneBySomeField($value): ?Property
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if ($category) {
+            $qb->leftJoin('p.category', 'c')
+                ->where($qb->expr()->eq('c.id', ':id'))
+                ->setParameter('id', $category->getId());
+        }
+
+        return $qb->getQuery();
+    }
+
 }

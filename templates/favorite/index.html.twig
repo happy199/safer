@@ -63,7 +63,7 @@
                   <td>
                     <figure class="media">
                       <div class="img-wrap">
-                        <img src="http://bootstrap-ecommerce.com/main/images/items/2.jpg"
+                        <img width="100" height="100" src="{{ favorite.property.images }}"
                           class="img-thumbnail img-sm" />
                       </div>
                       <figcaption class="media-body">
@@ -137,6 +137,9 @@
           </table>
         {% endif %}
       </div> <!-- card.// -->
+      <div class="mt-5">
+      {{ knp_pagination_render(favorites)}}
+      </div>
     </div>
     {% if user is defined and user is not null %}
       <div class="text-center my-5">

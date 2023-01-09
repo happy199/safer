@@ -7,12 +7,14 @@ use App\Entity\User;
 use App\Entity\Favorite;
 use App\Form\FavoriteType;
 use App\Repository\PropertyRepository;
+use App\Service\PropertyService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 
@@ -30,9 +32,9 @@ class PropertyController extends AbstractController
     }
 
     #[Route('/', name: 'index')]
-    public function index(): Response
+    public function index(PropertyService $propertyService, Request $request): Response
     {
-        $properties = $this->entityManager->getRepository(Property::class)->findAll();
+        $properties = $propertyService->getPaginatedProperties();
         return $this->render('property/index.html.twig', [
             'properties' => $properties,
         ]);
@@ -71,7 +73,9 @@ class PropertyController extends AbstractController
                 $favorite = new Favorite();
                 $favorite->setUser($user);
                 $favorite->setProperty($property);
+                $property->setNblike($property->getNblike() + 1);
                 $favorite->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
+                $entityManager->persist($property);
                 $entityManager->persist($favorite);
                 $entityManager->flush();
             }
@@ -99,6 +103,8 @@ class PropertyController extends AbstractController
                 $favorite->setProperty($property);
                 $favorite->setUser($user);
                 $favorite->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
+                $property->setNblike($property->getNblike() + 1);
+                $entityManager->persist($property);
                 $entityManager->persist($favorite);
                 $entityManager->flush();
         

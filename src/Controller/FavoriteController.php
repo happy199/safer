@@ -10,10 +10,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
-    use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 
@@ -34,10 +35,15 @@ class FavoriteController extends AbstractController
     }
 
     #[Route("/", name: "index")]
-    public function index(): Response
+    public function index(PaginatorInterface $paginator, Request $request): Response
     {
         $user = $this->getUser();
-        $favorites = $this->favoriteRepository->findBy(['user' => $user]);
+        $favoritesquery = $this->favoriteRepository->findBy(['user' => $user]);
+        $favorites = $paginator->paginate(
+            $favoritesquery, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            6 // Nombre de résultats par page
+        );
         return $this->render('favorite/index.html.twig', [
             'favorites' => $favorites,
             'user'      => $user,
@@ -51,7 +57,7 @@ class FavoriteController extends AbstractController
     }    
 
     #[Route("/listing", name: "listing")]
-    public function listing(Request $request): Response
+    public function listing(PaginatorInterface $paginator, Request $request): Response
     {
         if ($request->isMethod('POST')) {
             $email = $request->request->get('email');
@@ -62,7 +68,12 @@ class FavoriteController extends AbstractController
                 'is_register' => false
             ]);
 
-            $favorites = $this->favoriteRepository->findBy(['user' => $user]);
+            $favoritesquery = $this->favoriteRepository->findBy(['user' => $user]);
+            $favorites = $paginator->paginate(
+                $favoritesquery, // Requête contenant les données à paginer (ici nos articles)
+                $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+                6 // Nombre de résultats par page
+            );
 
             if($favorites){
                 return $this->render('favorite/index.html.twig', [
