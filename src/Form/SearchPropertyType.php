@@ -22,14 +22,6 @@ class SearchPropertyType extends AbstractType
             ],
             'required' => false
         ])
-        // ->add('categorie', EntityType::class, [
-        //     'class' => Categories::class,
-        //     'label' => false,
-        //     'attr' => [
-        //         'class' => 'form-control',
-        //     ],
-        //     'required' => false
-        // ])
         ->add('Rechercher', SubmitType::class, [
             'attr' => [
                 'class' => 'btn btn-b-n mt-3',
@@ -40,7 +32,6 @@ class SearchPropertyType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            // Configure your form options here
         ]);
     }
 }

@@ -18,7 +18,7 @@ class UserFixtures extends AppFixtures
     public function load(ObjectManager $manager): void
     {
         $faker = Faker\Factory::create('fr_FR');
-
+        // Créer 5 users avec un role admin
         for($adm = 0; $adm < 5 ; ++$adm){
             $admin = new User();
             $admin->setEmail($faker->email);
@@ -28,7 +28,7 @@ class UserFixtures extends AppFixtures
             );
             $manager->persist($admin);
         }
-
+        // Créer 5 users avec un role user
         for($usr = 0; $usr < 5 ; ++$usr){
             $user = new User();
             $user->setEmail($faker->email);

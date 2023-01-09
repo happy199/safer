@@ -25,6 +25,8 @@ class ProfileController extends AbstractController
 
     }
 
+    // Afficher la page de visualisation du profil
+
     #[Route('/profile', name: 'app_profile')]
     public function index(): Response
     {
@@ -34,6 +36,8 @@ class ProfileController extends AbstractController
             'user' => $user,
         ]);
     }
+
+    // Afficher la page de modification profil
 
     #[Route("/profil/edit", name: "user_edit")]
     public function edit(Request $request, UserPasswordEncoderInterface $passwordEncoder, ManagerRegistry $doctrine): Response

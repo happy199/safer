@@ -3,6 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Contact;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class ContactCrudController extends AbstractCrudController
@@ -12,14 +15,10 @@ class ContactCrudController extends AbstractCrudController
         return Contact::class;
     }
 
-    /*
-    public function configureFields(string $pageName): iterable
+    public function configureActions(Actions $actions): Actions
     {
-        return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
-        ];
+        return $actions
+        ->add(Crud::PAGE_INDEX, Action::DETAIL) //ajouter l'action de visualisation
+        ->disable(Action::EDIT); //cacher l'action d'édition
     }
-    */
 }

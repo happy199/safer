@@ -13,9 +13,16 @@ class CategoryFixtures extends Fixture
     private $counter = 1;
     public function __construct(private SluggerInterface $slugger){}
 
+     /**
+     * Fonction de chargement des fixtures de catégories.
+     */
+
     public function load(ObjectManager $manager): void
     {
+        // Boucle de création de 10 catégories
+
         for($ca = 0; $ca < 10 ; ++$ca){
+            // Utilisation de la librairie Faker pour générer des données aléatoires
             $faker = Faker\Factory::create('fr_FR');
             $cat = new Category();
             $cat->setName($faker->word);
@@ -24,6 +31,7 @@ class CategoryFixtures extends Fixture
             $manager->persist($cat);
             $this->addReference('cat-'.$this->counter, $cat);
             $this->counter++;
+            // Envoi en base de données des données persistées
             $manager->flush();
         }
     }

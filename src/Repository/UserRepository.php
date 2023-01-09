@@ -24,6 +24,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         parent::__construct($registry, User::class);
     }
 
+    // Sauvegarder une entité User.
+
     public function save(User $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -32,6 +34,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             $this->getEntityManager()->flush();
         }
     }
+
+    // Supprimer une entité User.
 
     public function remove(User $entity, bool $flush = false): void
     {
@@ -42,9 +46,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         }
     }
 
-    /**
-     * Used to upgrade (rehash) the user's password automatically over time.
-     */
+    // Utilisé pour mettre à jour (rehash) le mot de passe de l'utilisateur automatiquement au fil du temps.
+
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
         if (!$user instanceof User) {
@@ -56,28 +59,4 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->save($user, true);
     }
 
-//    /**
-//     * @return User[] Returns an array of User objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('u.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?User
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

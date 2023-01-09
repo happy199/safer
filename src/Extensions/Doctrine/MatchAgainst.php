@@ -6,6 +6,10 @@ use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 
+/**
+ * Classe permettant d'utiliser la fonction MATCH AGAINST de MySQL dans une requête Doctrine.
+ */
+
 class MatchAgainst extends FunctionNode
 {
     /** @var array list of \Doctrine\ORM\Query\AST\PathExpression */
@@ -17,22 +21,27 @@ class MatchAgainst extends FunctionNode
     /** @var bool */
     protected $queryExpansion = false;
 
+    /**
+     * Parse la partie de la requête concernée par la fonction MATCH AGAINST.
+     *
+     */
+
     public function parse(Parser $parser)
     {
         // match
         $parser->match(Lexer::T_IDENTIFIER);
         $parser->match(Lexer::T_OPEN_PARENTHESIS);
-        // first Path Expression is mandatory
+        // premier Path Expression est obligatoire
         $this->pathExp = [];
         $this->pathExp[] = $parser->StateFieldPathExpression();
-        // Subsequent Path Expressions are optional
+        // les Path Expressions suivants sont optionnels
         $lexer = $parser->getLexer();
         while ($lexer->isNextToken(Lexer::T_COMMA)) {
             $parser->match(Lexer::T_COMMA);
             $this->pathExp[] = $parser->StateFieldPathExpression();
         }
         $parser->match(Lexer::T_CLOSE_PARENTHESIS);
-        // against
+        // Ceci aussi
         if (strtolower($lexer->lookahead['value']) !== 'against') {
             $parser->syntaxError('against');
         }
@@ -50,15 +59,23 @@ class MatchAgainst extends FunctionNode
         $parser->match(Lexer::T_CLOSE_PARENTHESIS);
     }
 
+    /**
+     * Génère le code SQL correspondant à la fonction MATCH AGAINST.
+     */
+
     public function getSql(SqlWalker $walker)
     {
+        // Initialisation du tableau contenant les champs à passer à la fonction MATCH AGAINST
         $fields = [];
+        // Parcours des expressions de chemin de l'entité
         foreach ($this->pathExp as $pathExp) {
             $fields[] = $pathExp->dispatch($walker);
         }
+        // Construction de la chaîne contenant les paramètres de la fonction MATCH AGAINST
         $against = $walker->walkStringPrimary($this->against)
             . ($this->booleanMode ? ' IN BOOLEAN MODE' : '')
             . ($this->queryExpansion ? ' WITH QUERY EXPANSION' : '');
+        // Retour du code SQL généré pour la fonction MATCH AGAINST
         return sprintf('MATCH (%s) AGAINST (%s)', implode(', ', $fields), $against);
     }
 }

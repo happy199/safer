@@ -18,6 +18,8 @@ class LikesController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
+    // Incrémenter le nombre de likes lorsque l'on clic sur le bouton coeur dans la vue détails d'une property
+
     #[Route('/likes/{slug}', name: 'app_likes')]
     public function index($slug, ManagerRegistry $doctrine): Response
     {

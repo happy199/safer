@@ -16,10 +16,13 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CategoryRepository extends ServiceEntityRepository
 {
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Category::class);
     }
+
+    // Sauvegarder une entité Category.
 
     public function save(Category $entity, bool $flush = false): void
     {
@@ -29,6 +32,8 @@ class CategoryRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    // Supprimer une entité Category.
 
     public function remove(Category $entity, bool $flush = false): void
     {

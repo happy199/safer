@@ -30,28 +30,28 @@ class DashboardController extends AbstractDashboardController
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        // $routeBuilder = $this->container->get(AdminUrlGenerator::class);
-        // $url = $routeBuilder->setController(CategoryCrudController::class)->generateUrl();
-        
-        // return $this->redirect($url);
+        //Récupérer le nombre total d'utilisateurs 
         $totalUsers = $this->entityManager->createQueryBuilder()
             ->select('COUNT(u)')
             ->from(User::class, 'u')
             ->getQuery()
             ->getSingleScalarResult();
 
+        //Récupérer le nombre total de catégories
         $totalCategories = $this->entityManager->createQueryBuilder()
             ->select('COUNT(c)')
             ->from(Category::class, 'c')
             ->getQuery()
             ->getSingleScalarResult();
 
+        //Récupérer le nombre total de propriétés
         $totalProperties = $this->entityManager->createQueryBuilder()
             ->select('COUNT(p)')
             ->from(Property::class, 'p')
             ->getQuery()
             ->getSingleScalarResult();
         
+        //Récupérer les informations des trois propriétés qui ont le plus de likes 
         $topLikedProperties = $this->entityManager->createQueryBuilder()
             ->select('p')
             ->from(Property::class, 'p')
@@ -60,6 +60,7 @@ class DashboardController extends AbstractDashboardController
             ->getQuery()
             ->getResult();    
 
+        // Retourner toutes les valeurs à la vue
         return $this->render('admin/my-dashboard.html.twig',[
             'totalUsers' => $totalUsers,
             'totalCategories' => $totalCategories,
@@ -77,6 +78,7 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
+        // Gestion du menu latéral
         yield MenuItem::linktoRoute('Retour au site', 'fas fa-home', 'app_main');
         yield MenuItem::linkToRoute('Tableau de bord', 'fas fa-dashboard', 'admin');
         yield MenuItem::linkToCrud('Catégories', 'fas fa-box', Category::class);

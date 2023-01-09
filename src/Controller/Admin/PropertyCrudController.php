@@ -34,7 +34,7 @@ class PropertyCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        $duplicate = Action::new(self::ACTION_DUPLICATE)
+        $duplicate = Action::new(self::ACTION_DUPLICATE)// action pour dupliquer une propriété
         ->linkToCrudAction('duplicateProperty')
         ->setCssClass('btn btn-info');
         return $actions
@@ -73,13 +73,13 @@ class PropertyCrudController extends AbstractCrudController
     {
         $property = $context->getEntity()->getInstance();
 
-        $duplicatedProperty = clone $property;
+        $duplicatedProperty = clone $property; // générer le clone du property reçu en paramêtre
 
         parent::persistEntity($em, $duplicatedProperty);
 
         $url = $adminUrlGenerator->setController(self::class)
             ->setAction(Action::DETAIL)
-            ->setEntityId($duplicatedProperty->getId())
+            ->setEntityId($duplicatedProperty->getId()) // faire appel a la fonction duplicateProperty 
             ->generateUrl();
 
         return $this->redirect($url);

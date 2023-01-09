@@ -21,6 +21,8 @@ class FavoriteRepository extends ServiceEntityRepository
         parent::__construct($registry, Favorite::class);
     }
 
+    // Sauvegarder une entité Favorite.
+
     public function save(Favorite $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -29,6 +31,8 @@ class FavoriteRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    // Supprimer une entité Favorite.
 
     public function remove(Favorite $entity, bool $flush = false): void
     {
@@ -39,28 +43,4 @@ class FavoriteRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Favorite[] Returns an array of Favorite objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Favorite
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

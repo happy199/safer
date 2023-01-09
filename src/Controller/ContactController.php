@@ -21,6 +21,8 @@ class ContactController extends AbstractController
         $form = $this->createForm(ContactType::class, $contact);
         $form->handleRequest($request);
 
+        // Enregistrement du message et Envoie du mail de contact
+
         if($form->isSubmitted() && $form->isValid()) {
             $contact->setType('receive');
             $entityManager->persist($contact);

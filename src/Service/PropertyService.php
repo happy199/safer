@@ -19,6 +19,8 @@ class PropertyService
 
     }
 
+    // Gérer le filtrage et la pagination en fonction de l'entité category
+
     public function getPaginatedProperties(?Category $category = null)
     {
         $request = $this->requestStack->getMainRequest();

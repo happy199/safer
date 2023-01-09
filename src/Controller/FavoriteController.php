@@ -40,7 +40,7 @@ class FavoriteController extends AbstractController
         $user = $this->getUser();
         $favoritesquery = $this->favoriteRepository->findBy(['user' => $user]);
         $favorites = $paginator->paginate(
-            $favoritesquery, // Requête contenant les données à paginer (ici nos articles)
+            $favoritesquery, // Requête contenant les données à paginer (ici nos favoris)
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
             6 // Nombre de résultats par page
         );
@@ -70,7 +70,7 @@ class FavoriteController extends AbstractController
 
             $favoritesquery = $this->favoriteRepository->findBy(['user' => $user]);
             $favorites = $paginator->paginate(
-                $favoritesquery, // Requête contenant les données à paginer (ici nos articles)
+                $favoritesquery, // Requête contenant les données à paginer (ici nos favoris)
                 $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
                 6 // Nombre de résultats par page
             );
@@ -124,6 +124,8 @@ class FavoriteController extends AbstractController
         } 
     }
 
+    // Supprimer un favoris
+    
     #[Route("/{id}/delete", name: "delete")]
     public function delete(Favorite $favorite, AuthorizationCheckerInterface $authChecker): Response
     {

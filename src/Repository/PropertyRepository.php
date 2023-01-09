@@ -23,6 +23,8 @@ class PropertyRepository extends ServiceEntityRepository
         parent::__construct($registry, Property::class);
     }
 
+    // Sauvegarder une entité Property.
+
     public function save(Property $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -31,6 +33,8 @@ class PropertyRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    // Sauvegarder une entité Property.
 
     public function remove(Property $entity, bool $flush = false): void
     {
@@ -41,10 +45,9 @@ class PropertyRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-    * Recherche les annonces en fonction du formulaire
-    * @return void 
-    */
+    
+    // Recherche les annonces en fonction du formulaire de recherche textuel
+   
     public function search($mots = null, $categorie = null){
         $query = $this->createQueryBuilder('a');
         $query->where('a.category = :categorie')
@@ -56,6 +59,8 @@ class PropertyRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
+    // Recherche les annonces en fonction du formulaire de recherche par prix
+
     public function findByPriceRange($minPrice, $maxPrice)
     {
         return $this->createQueryBuilder('p')
@@ -66,6 +71,8 @@ class PropertyRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    // Recherche les annonces et avec la pagination
 
     public function findForPagination(?Category $category = null): Query
     {
