@@ -32,6 +32,8 @@ class UserCrudController extends AbstractCrudController
         return User::class;
     }
 
+    //configuration des champs pour le formulaire de mofification d'un user
+
     public function configureFields( string $pageName ): iterable {
         yield FormField::addPanel( 'Modifier l\'utilisateur' )->setIcon( 'fa fa-user' );
         yield EmailField::new( 'email' )->onlyWhenUpdating()->setDisabled();
@@ -63,6 +65,7 @@ class UserCrudController extends AbstractCrudController
                    ] );
     }
     
+    //Intégrer le nécessaire pour faire evoluer la fonction qui récupère et encode le mot de passe existant
     public function createEditFormBuilder( EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context ): FormBuilderInterface {
         $plainPassword = $entityDto->getInstance()?->getPassword();
         $formBuilder   = parent::createEditFormBuilder( $entityDto, $formOptions, $context );
@@ -71,6 +74,7 @@ class UserCrudController extends AbstractCrudController
         return $formBuilder;
     }
 
+    // nouveau formulaire
     public function createNewFormBuilder( EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context ): FormBuilderInterface {
         $formBuilder = parent::createNewFormBuilder( $entityDto, $formOptions, $context );
         $this->addEncodePasswordEventListener( $formBuilder );
@@ -78,6 +82,7 @@ class UserCrudController extends AbstractCrudController
         return $formBuilder;
     }
 
+    // Utiliser l'écouteur pour gérer efficacement la récupération et le hashage du nouveau mot de passe 
     protected function addEncodePasswordEventListener( FormBuilderInterface $formBuilder, $plainPassword = null ): void {
         $formBuilder->addEventListener( FormEvents::SUBMIT, function ( FormEvent $event ) use ( $plainPassword ) {
             /** @var User $user */
