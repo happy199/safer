@@ -13,32 +13,60 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class DashboardController extends AbstractDashboardController
 {
+    private $entityManager;
+
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+
+    }
+
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        $routeBuilder = $this->container->get(AdminUrlGenerator::class);
-        $url = $routeBuilder->setController(CategoryCrudController::class)->generateUrl();
+        // $routeBuilder = $this->container->get(AdminUrlGenerator::class);
+        // $url = $routeBuilder->setController(CategoryCrudController::class)->generateUrl();
         
-        return $this->redirect($url);
+        // return $this->redirect($url);
+        $totalUsers = $this->entityManager->createQueryBuilder()
+            ->select('COUNT(u)')
+            ->from(User::class, 'u')
+            ->getQuery()
+            ->getSingleScalarResult();
 
-        // Option 1. You can make your dashboard redirect to some common page of your backend
-        //
-        // $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-        // return $this->redirect($adminUrlGenerator->setController(OneOfYourCrudController::class)->generateUrl());
+        $totalCategories = $this->entityManager->createQueryBuilder()
+            ->select('COUNT(c)')
+            ->from(Category::class, 'c')
+            ->getQuery()
+            ->getSingleScalarResult();
 
-        // Option 2. You can make your dashboard redirect to different pages depending on the user
-        //
-        // if ('jane' === $this->getUser()->getUsername()) {
-        //     return $this->redirect('...');
-        // }
+        $totalProperties = $this->entityManager->createQueryBuilder()
+            ->select('COUNT(p)')
+            ->from(Property::class, 'p')
+            ->getQuery()
+            ->getSingleScalarResult();
+        
+        $topLikedProperties = $this->entityManager->createQueryBuilder()
+            ->select('p')
+            ->from(Property::class, 'p')
+            ->orderBy('p.nblike', 'DESC')
+            ->setMaxResults(3)
+            ->getQuery()
+            ->getResult();    
 
-        // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
-        // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
-        //
-        // return $this->render('some/path/my-dashboard.html.twig');
+        return $this->render('admin/my-dashboard.html.twig',[
+            'totalUsers' => $totalUsers,
+            'totalCategories' => $totalCategories,
+            'totalProperties' => $totalProperties,
+            'topLikedProperties' => $topLikedProperties,
+            
+        ]);
     }
 
     public function configureDashboard(): Dashboard
@@ -49,7 +77,8 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linktoRoute('Retour au site', 'fas fa-home', 'homepage');
+        yield MenuItem::linktoRoute('Retour au site', 'fas fa-home', 'app_main');
+        yield MenuItem::linkToRoute('Tableau de bord', 'fas fa-dashboard', 'admin');
         yield MenuItem::linkToCrud('Catégories', 'fas fa-box', Category::class);
         yield MenuItem::linkToCrud('Propriétés', 'fas fa-land-mine-on', Property::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', User::class);
