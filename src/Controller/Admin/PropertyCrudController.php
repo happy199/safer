@@ -56,6 +56,7 @@ class PropertyCrudController extends AbstractCrudController
                 'A louer' => 'rent',
             ])->renderExpanded(true),
             MoneyField::new('price', 'Prix')->setCurrency('EUR'),
+            NumberField::new('postalcode', 'Code Postal'),
             TextField::new('address', 'Adresse'),
             TextField::new('city', 'Ville'),
             TextField::new('department', 'Département'),
@@ -63,7 +64,7 @@ class PropertyCrudController extends AbstractCrudController
                 ->setBasePath('uploads/images/properties')
                 ->setUploadDir('public/uploads/images/properties')
                 ->setSortable(false)
-                ->setUploadedFileNamePattern('[year]/[month]/[day]/[slug].[extension]'),
+                ->setUploadedFileNamePattern('[slug].[extension]'),
 
         ];
     }

@@ -45,7 +45,7 @@
             <div class="col-md-4">
                 <div class="card-box-a card-shadow">
                     <div class="img-box-a">
-                        <img src="{{ property.images }}" alt="" class="img-a img-fluid">
+                        <img src="/uploads/images/properties/{{ property.images }}" alt="" class="img-a img-fluid" style="min-height: 275px;">
                     </div>
                     <div class="card-overlay">
                         <div class="card-overlay-a-content">
@@ -89,7 +89,7 @@
         <div class="row">
           <div class="col-sm-12">
             <nav class="pagination-a">
-              {{ knp_pagination_render(properties) }}
+              {# {{ knp_pagination_render(properties) }} #}
             </nav>
           </div>
         </div>

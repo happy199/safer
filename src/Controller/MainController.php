@@ -40,9 +40,9 @@ class MainController extends AbstractController
             ->from(Category::class, 'c')
             ->leftJoin('c.properties', 'p')
             ->where($qb->expr()->isNotNull('p.id'))
-            ->orderBy('c.created_at', 'DESC')
-            ->setMaxResults(4)
-            ->setFirstResult(0);
+            ->orderBy('c.created_at', 'DESC');
+            // ->setMaxResults(4)
+            // ->setFirstResult(0);
         
         // Récupération des résultats de la requête
 
